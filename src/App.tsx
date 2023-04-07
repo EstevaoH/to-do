@@ -19,7 +19,7 @@ export function App() {
     content: "",
     completed: false,
   });
-  const [tasks, setTasks] = useState([] as Task[]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState(0);
 
   const isNewTaskEmpty = newTasks.content.length === 0;
@@ -33,7 +33,7 @@ export function App() {
 
 
   useEffect(() => {
-    const tasksItem = JSON.parse(localStorage.getItem("@to-do:task-1.0.0")|| '{}');
+    const tasksItem = JSON.parse(localStorage.getItem("@to-do:task-1.0.0") as any);
     if (tasksItem) {
       setTasks(tasksItem);
       console.log(tasksItem);
