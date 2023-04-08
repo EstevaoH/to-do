@@ -30,7 +30,7 @@ export function Task({ id, content, completed ,onDeleteTaks,onChangeTask }: TakP
     <div className={styles.cardTask}>
       <input type="checkbox" checked={completed} onChange={handelCompletedTask} />
       <div className={styles.cardTaskContent}>
-        <span>{content}</span>
+        <p>{content}</p>
       </div>
       <button onClick={handleDeleteComment}>
         <Trash size={20} />
