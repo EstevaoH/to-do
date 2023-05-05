@@ -1,5 +1,6 @@
 import { Trash } from "phosphor-react";
 import styles from "./Task.module.css";
+import { useState } from "react";
 
 interface Task {
   id: string;
@@ -12,23 +13,46 @@ interface TakProps {
   content: string;
   completed?: boolean;
   onDeleteTaks: (task: string) => void;
-  onChangeTask: (task: string) =>void;
+  onChangeTask: (task: string) => void;
 }
 
+export function Task({
+  id,
+  content,
+  completed,
+  onDeleteTaks,
+  onChangeTask,
+}: TakProps) {
+  const [show, setShow] = useState(false);
 
-
-export function Task({ id, content, completed ,onDeleteTaks,onChangeTask }: TakProps) {
-  function handleDeleteComment(){
-    onDeleteTaks(id!)
+  function handleDeleteComment() {
+    let interval: number;
+    if (!show) {
+      setShow(true);
+      interval = setTimeout(() => {
+        onDeleteTaks(id!);
+        setShow(false);
+      }, 500);
+    }
+    return () => {
+      clearTimeout(interval);
+    };
   }
+  const fade = `${styles.fadeOutTask} ${styles.fadeInTop}`;
 
-  function handelCompletedTask(){
-    onChangeTask(id!)
+  function handelCompletedTask() {
+    onChangeTask(id!);
   }
 
   return (
-    <div className={styles.cardTask}>
-      <input type="checkbox" checked={completed} onChange={handelCompletedTask} />
+    <div
+      className={`${styles.cardTask} ${styles.fadeInTask} ${!show ? "" : fade}`}
+    >
+      <input
+        type="checkbox"
+        checked={completed}
+        onChange={handelCompletedTask}
+      />
       <div className={styles.cardTaskContent}>
         <p>{content}</p>
       </div>

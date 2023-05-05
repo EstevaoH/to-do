@@ -1,11 +1,13 @@
 import { PlusCircle } from "phosphor-react";
 import { v4 as uuidv4 } from "uuid";
+import { Transition } from "react-transition-group";
 import { Header } from "./Components/Header/Header";
 import { Task } from "./Components/Taks/Task";
 
 import clipboard from "./assets/clipboard.svg";
 import styles from "./App.module.css";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { Footer } from "./Components/Footer/Footer";
 
 interface Task {
   id: string;
@@ -21,32 +23,30 @@ export function App() {
   });
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState(0);
-
   const isNewTaskEmpty = newTasks.content.length === 0;
   const isNewTaskMoreLimit = newTasks.content.length > 150;
 
   useEffect(() => {
-		let completeArray = [];
-		tasks.filter((todo) => todo.completed === true && completeArray.push(todo));
-		setCompletedTasks(completeArray.length);
-	}, [tasks]);
-
+    let completeArray = [];
+    tasks.filter((todo) => todo.completed === true && completeArray.push(todo));
+    setCompletedTasks(completeArray.length);
+  }, [tasks]);
 
   useEffect(() => {
-    const tasksItem = JSON.parse(localStorage.getItem("@to-do:task-1.0.0") as any);
+    const tasksItem = JSON.parse(
+      localStorage.getItem("@to-do:task-1.0.0") as any
+    );
     if (tasksItem) {
       setTasks(tasksItem);
-      console.log(tasksItem);
     }
   }, []);
 
   useEffect(() => {
-    if(tasks.length > 0){
+    if (tasks.length > 0) {
       localStorage.setItem("@to-do:task-1.0.0", JSON.stringify(tasks));
-    }else{
-      localStorage.clear()
+    } else {
+      localStorage.clear();
     }
-    console.log(tasks);
   }, [tasks]);
 
   function handleCreateNewTask(event: FormEvent) {
@@ -69,13 +69,13 @@ export function App() {
     });
     setTasks(taskWithouToDeleteOne);
   }
-  function toggleComplete (taskToCompleted: string){
+  function toggleComplete(taskToCompleted: string) {
     tasks.find((task) => {
-			if (task.id === taskToCompleted) {
-				task.completed = !task.completed;
-			}
-			return setTasks([...tasks]);
-		});
+      if (task.id === taskToCompleted) {
+        task.completed = !task.completed;
+      }
+      return setTasks([...tasks]);
+    });
   }
 
   return (
@@ -122,8 +122,8 @@ export function App() {
           <div className={styles.emptyTaskList}>
             <img src={clipboard} alt="" />
             <p className={styles.paragraph}>
-              Você ainda não tem tarefas cadastradas
-              <span>Crie tarefas e organize seus itens a fazer</span>
+              You don't have tasks registered yet
+              <span> Create tasks and organize to-do items</span>
             </p>
           </div>
         )}
@@ -140,6 +140,7 @@ export function App() {
           );
         })}
       </main>
+      <Footer />
     </div>
   );
 }
